@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "60822638304",
+    "project_id": "doctor-appointment-miros",
+    "storage_bucket": "doctor-appointment-miros.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60822638304:android:983e52eec0b598a2824a85",
+        "android_client_info": {
+          "package_name": "com.example.doctor_appointment_front_miros"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAskIoXppE3OdOEIi_1T9p74cMMk_zWg98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
