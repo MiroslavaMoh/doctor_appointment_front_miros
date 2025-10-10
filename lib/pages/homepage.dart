@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'firebase_options.dart';  
+import '../firebase_options.dart';  
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class home_alternative extends StatefulWidget {
   const home_alternative({super.key});
@@ -80,7 +81,17 @@ class _home_alternativeState extends State<home_alternative> {
                 onPressed: _guardarCita, //Activa la función "_guardarCitaDemo"
                 child: const Text('Guardar cita demo'),
               ),
-            )
+            ),
+
+            ElevatedButton(
+                onPressed: () async {
+                  //await _auth.signOut();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Sesión cerrada")),
+                  );
+                },
+                child: const Text("Cerrar sesión"),
+              ),
 
           ],
         ),
