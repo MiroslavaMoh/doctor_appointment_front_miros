@@ -25,7 +25,7 @@ class _MainTabViewScreenState extends State<MainTabViewScreen> with SingleTicker
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller = TabController(length: 5, vsync: this);
+    controller = TabController(length: 4, vsync: this);
     controller?.addListener((){
       selectTab = controller?.index ?? 0;
       setState(() {

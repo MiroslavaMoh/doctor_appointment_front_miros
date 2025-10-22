@@ -1,3 +1,5 @@
+import 'package:doctor_appointment_front_miros/custom_widget/tab_view.dart';
+import 'package:doctor_appointment_front_miros/pages/home_screen.dart';
 import 'package:doctor_appointment_front_miros/pages/registerpage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -122,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                       );
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const home_alternative()),
+                        MaterialPageRoute(builder: (context) => const MainTabViewScreen()),
                       );
                     } on FirebaseAuthException catch (e) {
                       String message = "";

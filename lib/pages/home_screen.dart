@@ -2,15 +2,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'dart:ui';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:doctor_appointment_front_miros/custom_widget/tab_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+  
 }
-
 class _HomeScreenState extends State<HomeScreen> {
+//Para almacenar estado del nombre de usuario
+
+  User? _user; // Variable para almacenar el usuario autenticado
+  User? user = FirebaseAuth.instance.currentUser;
+  
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData(); // Cargar datos del usuario al iniciar la pantalla
+  }
+
+  void _loadUserData() {
+    setState(() {
+      _user = FirebaseAuth.instance.currentUser;
+    });
+  }
+
+
    int selectIndex = 0;
   List catArr = [
     {"icon": "assets/img/all.png", "title": "Todo"},
@@ -56,12 +79,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
+    return Material( // <--- AGREGA ESTA LÍNEA
+      child: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+             /*Image.asset(
+            'assets/img/bg_01.jpg',
+            width: double.maxFinite, //Maximo de su contenedor padre
+            fit: BoxFit.fitWidth, //Maximo de su contenedor padre
+            ),*/
+          
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Row(
@@ -77,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Buenos días, Usuario",
+                      "¡Buenos días, ${_user?.displayName ?? 'Usuario'}!",
                       style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 24,
@@ -88,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 8,
                     ),
                     Text(
-                      "¡Le deseamos un día miautastico!",
+                      "Le deseamos un día miautastico",
                       style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 20,
@@ -469,8 +498,10 @@ class _HomeScreenState extends State<HomeScreen> {
             //Fin-Fichas de gatos recomendados
             ],
           ),
-        ),
-      ),
+        )
+     ),
     );
+    
   }
 }
+

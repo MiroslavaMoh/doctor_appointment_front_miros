@@ -27,8 +27,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Login de prueba',
       debugShowCheckedModeBanner: false, // This line disables the debug banner
-      home: HomeScreen(),
-      //home: LoginPage(),
+      //home: HomeScreen(),
+      home: LoginPage(),
+      
     );
   }
 }
