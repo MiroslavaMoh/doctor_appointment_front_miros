@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,22 +10,28 @@ class Settingspage extends StatefulWidget {
 }
 
 class _Settingspage extends State<Settingspage> {
+  //Logica de visualizacion de ususario
+    User? _user; // Variable para almacenar el usuario autenticado
+    User? user = FirebaseAuth.instance.currentUser;
+    
+    @override
+    void initState() {
+      super.initState();
+      _loadUserData(); // Cargar datos del usuario al iniciar la pantalla
+    }
+
+    void _loadUserData() {
+      setState(() {
+        _user = FirebaseAuth.instance.currentUser;
+      });
+    }
+    //fin - Logica de visualizacion de ususario
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //drawer: MyDrawer(),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.grey[800]),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
+    return Material( // <--- AGREGA ESTA LÍNEA
+      child:SingleChildScrollView(
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,15 +41,30 @@ class _Settingspage extends State<Settingspage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Image.asset(
+                      "assets/img/user.png",
+                      
+                      width: 100,
+                      height: 100,
+                    ),
                     Text(
-                      "Configuraciones",
+                      "Tu perfil y configuraciones",
                       style: TextStyle(
                         color: Colors.grey[800],
-                        fontSize: 28,
+                        fontSize: 24,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 10), // Espacio entre título y la lista
+                    const SizedBox(height: 8),
+                    Text(
+                      _user?.displayName ?? "Usuario sin nombre",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+// Espacio entre título y la lista
 
                     // Inicio-Lista estilizada
                     SizedBox(

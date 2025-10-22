@@ -41,12 +41,10 @@ class _MainTabViewScreenState extends State<MainTabViewScreen> with SingleTicker
       body: TabBarView(
         controller: controller,
         children: [
-        const HomeScreen(),
-        const Messagepage(),
-        const Settingspage(),
-        const CitasPage(),
-
-
+          const HomeScreen(),
+          const Messagepage(),
+          const CitasPage(),
+          const Settingspage(),
       ]),
 
       bottomNavigationBar: Container(
