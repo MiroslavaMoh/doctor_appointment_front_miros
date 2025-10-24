@@ -1,4 +1,5 @@
 import 'package:doctor_appointment_front_miros/pages/appflow/routes_appflow.dart';
+import 'package:doctor_appointment_front_miros/pages/authflow/routes_authflow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,22 +12,7 @@ class Settingspage extends StatefulWidget {
 }
 
 class _Settingspage extends State<Settingspage> {
-  //Logica de visualizacion de ususario
-    User? _user; // Variable para almacenar el usuario autenticado
-    User? user = FirebaseAuth.instance.currentUser;
-    
-    @override
-    void initState() {
-      super.initState();
-      _loadUserData(); // Cargar datos del usuario al iniciar la pantalla
-    }
-
-    void _loadUserData() {
-      setState(() {
-        _user = FirebaseAuth.instance.currentUser;
-      });
-    }
-    //fin - Logica de visualizacion de ususario
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
   @override
@@ -58,7 +44,7 @@ class _Settingspage extends State<Settingspage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _user?.displayName ?? "Usuario sin nombre",
+                      FirebaseAuth.instance.currentUser?.email ?? "Usuario sin nombre",
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18,
@@ -131,7 +117,11 @@ class _Settingspage extends State<Settingspage> {
                             child: ListTile(
                               leading: Icon(Icons.privacy_tip, color: Colors.grey[600]),
                               title: Text("Cerrar sesión"),
-                              onTap: () {},
+                              onTap: () async {
+                                // Cierra la sesión del usuario actual con FirebaseAuth
+                                await _auth.signOut();
+                                Navigator.pushReplacementNamed(context, routes_authflow.login);
+                              },
                             ),
                           ),
                         ],

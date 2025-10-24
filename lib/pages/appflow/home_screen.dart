@@ -17,21 +17,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 //Para almacenar estado del nombre de usuario
 
-  User? _user; // Variable para almacenar el usuario autenticado
-  User? user = FirebaseAuth.instance.currentUser;
-  
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final user = FirebaseAuth.instance.currentUser;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData(); // Cargar datos del usuario al iniciar la pantalla
-  }
-
-  void _loadUserData() {
-    setState(() {
-      _user = FirebaseAuth.instance.currentUser;
-    });
-  }
 
 
    int selectIndex = 0;
@@ -106,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "¡Buenos días, ${_user?.displayName ?? 'Usuario'}!",
+                      "¡Buenos días, ${user?.displayName ?? 'Usuario'}!",
                       style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 24,
