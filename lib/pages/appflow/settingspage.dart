@@ -1,3 +1,4 @@
+import 'package:doctor_appointment_front_miros/pages/appflow/routes_appflow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -64,7 +65,7 @@ class _Settingspage extends State<Settingspage> {
                       ),
                     ),
                     const SizedBox(height: 25),
-// Espacio entre título y la lista
+                    // Espacio entre título y la lista
 
                     // Inicio-Lista estilizada
                     SizedBox(
@@ -79,8 +80,10 @@ class _Settingspage extends State<Settingspage> {
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: ListTile(
                               leading: Icon(Icons.notifications, color: Colors.grey[600]),
-                              title: Text("Notificaciones"),
-                              onTap: () {},
+                              title: Text("Perfil"),
+                              onTap: () {
+                                Navigator.pushReplacementNamed (context, Routes_appflow.profile);
+                              },
                             ),
                           ),
                           Container(
@@ -116,6 +119,18 @@ class _Settingspage extends State<Settingspage> {
                             child: ListTile(
                               leading: Icon(Icons.privacy_tip, color: Colors.grey[600]),
                               title: Text("Privacidad"),
+                              onTap: () {},
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: ListTile(
+                              leading: Icon(Icons.privacy_tip, color: Colors.grey[600]),
+                              title: Text("Cerrar sesión"),
                               onTap: () {},
                             ),
                           ),

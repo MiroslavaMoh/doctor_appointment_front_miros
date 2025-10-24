@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:doctor_appointment_front_miros/custom_widget/round_button.dart';
-import 'package:doctor_appointment_front_miros/pages/loginpage.dart';
+import 'package:doctor_appointment_front_miros/pages/authflow/routes_authflow.dart';
 
 class Lostpasswordpage extends StatefulWidget {
   const Lostpasswordpage({super.key});
@@ -28,10 +28,8 @@ class _LostpasswordpageState extends State<Lostpasswordpage> {
 
         // Regresar al login después de unos segundos
         Future.delayed(const Duration(seconds: 2), () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
+          Navigator.pushReplacementNamed(context, routes_authflow.login);
+
         });
       } on FirebaseAuthException catch (e) {
         String message = "Error al enviar correo";
@@ -121,10 +119,8 @@ class _LostpasswordpageState extends State<Lostpasswordpage> {
                   // Botón para volver al login
                   TextButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => const LoginPage()),
-                      );
+                      Navigator.pushReplacementNamed(context, routes_authflow.login);
+
                     },
                     child: Text(
                       "Inicio de sesión",

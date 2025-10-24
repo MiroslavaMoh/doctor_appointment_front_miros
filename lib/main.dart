@@ -1,9 +1,11 @@
+import 'package:doctor_appointment_front_miros/pages/appflow/routes_appflow.dart';
+import 'package:doctor_appointment_front_miros/pages/authflow/routes_authflow.dart';
 import 'package:doctor_appointment_front_miros/custom_widget/tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
-import 'pages/loginpage.dart';
+import 'pages/authflow/loginpage.dart';
 
 import 'package:google_fonts/google_fonts.dart';//importar google fonts en todo el proyecto
 
@@ -29,8 +31,20 @@ class MyApp extends StatelessWidget {
       title: 'Login de prueba',
       debugShowCheckedModeBanner: false, // This line disables the debug banner
       //home: MainTabViewScreen(),
-      home: LoginPage(),
-      
+      //home: LoginPage(),
+       // Rutas iniciales (flujo de login o flujo principal)
+      initialRoute: routes_authflow.login, 
+
+      // Aquí se combinan ambos generadores de rutas
+      onGenerateRoute: (settings) {
+        if (settings.name == routes_authflow.login ||
+            settings.name == routes_authflow.register ||
+            settings.name == routes_authflow.lostpassword) {
+          return routes_authflow.generateRoute(settings);
+        } else {
+          return Routes_appflow.generateRoute(settings);
+        }
+      },
     );
   }
 }

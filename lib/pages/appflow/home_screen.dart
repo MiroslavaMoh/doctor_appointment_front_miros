@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                             child: InkWell( //Para hacer tap, se requiere material
                           onTap: () {
-                            //context.push(const CourseDetailScreen());
+                            //
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                             child: InkWell(
                           onTap: () {
-                            //context.push(const CourseDetailScreen());
+                            //
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
@@ -424,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return InkWell(
                   borderRadius: BorderRadius.circular(10),
                   onTap: () {
-                    //context.push(const RemindersScreen());
+                    //
                   },
                   child: Container(
                     height: 200,

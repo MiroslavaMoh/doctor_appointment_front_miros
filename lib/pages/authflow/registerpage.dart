@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_front_miros/pages/authflow/routes_authflow.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:doctor_appointment_front_miros/custom_widget/round_button.dart';
-import 'package:doctor_appointment_front_miros/pages/homepage.dart';
-import 'package:doctor_appointment_front_miros/pages/loginpage.dart';
-import 'package:doctor_appointment_front_miros/pages/lostpasswordpage.dart';
 
 class registerpage extends StatefulWidget {
   const registerpage({super.key});
@@ -52,10 +50,8 @@ class _registerpageState extends State<registerpage> {
           ),
         );
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
+        Navigator.pushReplacementNamed(context, routes_authflow.login);
+
       } on FirebaseAuthException catch (e) {
         String error = 'Error inesperado';
 
@@ -169,10 +165,8 @@ class _registerpageState extends State<registerpage> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const LoginPage()),
-                          );
+                          Navigator.pushNamed(context, routes_authflow.login);
+
                         },
                         child: Text(
                           "Iniciar sesión",
@@ -185,10 +179,8 @@ class _registerpageState extends State<registerpage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const Lostpasswordpage()),
-                          );
+                          Navigator.pushNamed(context, routes_authflow.lostpassword);
+
                         },
                         child: Text(
                           "¿Olvidaste tu contraseña?",

@@ -1,13 +1,10 @@
-import 'package:doctor_appointment_front_miros/custom_widget/tab_view.dart';
-import 'package:doctor_appointment_front_miros/pages/home_screen.dart';
-import 'package:doctor_appointment_front_miros/pages/registerpage.dart';
+import 'package:doctor_appointment_front_miros/pages/appflow/routes_appflow.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart'; // Importar Google Fonts
-
 import 'package:doctor_appointment_front_miros/custom_widget/round_button.dart';
-import 'package:doctor_appointment_front_miros/pages/homepage.dart';
-import 'package:doctor_appointment_front_miros/pages/lostpasswordpage.dart';
+
+import 'package:doctor_appointment_front_miros/pages/authflow/routes_authflow.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -122,10 +119,10 @@ class _LoginPageState extends State<LoginPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Bienvenido ${userCredential.user!.email}")),
                       );
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MainTabViewScreen()),
-                      );
+
+                    //Navigator.pushNamed(context, Routes_appflow.home); // reemplazo con routes.dart
+                    Navigator.pushReplacementNamed(context, Routes_appflow.tabview);
+
                     } on FirebaseAuthException catch (e) {
                       String message = "";
                       if (e.code == 'user-not-found') {
@@ -150,10 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           
                           TextButton(onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const registerpage()),
-                          );
+                          Navigator.pushNamed(context, routes_authflow.register); // reemplazo con routes.dart
                           },
 
                           //const Spacer(),
@@ -171,13 +165,11 @@ class _LoginPageState extends State<LoginPage> {
 
                           //Conectar el boton para que te envie a login_screen
                           TextButton(onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const Lostpasswordpage()),
-                          );
+                          Navigator.pushNamed(context, routes_authflow.lostpassword);
+
                           },
                           child: Text(
-                            "Olvidaste tu contraseña?",
+                            "¿Olvidaste tu contraseña?",
                             style: TextStyle( 
                             color:Colors.grey.shade600,
                             fontSize:14, 

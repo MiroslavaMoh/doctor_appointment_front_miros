@@ -147,7 +147,6 @@ class _MessagepageState extends State<Messagepage> {
                   return InkWell(
                     onTap: () {
                       // Aquí puedes navegar a la pantalla de chat individual
-                      // Navigator.push(context, MaterialPageRoute(builder: (_) => ChatPage()));
                     },
                     child: Container(
                       color: Colors.white,
