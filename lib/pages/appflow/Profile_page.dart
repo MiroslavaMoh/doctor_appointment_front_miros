@@ -69,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
         'email': user.email,
         'uid': user.uid,
         'actualizadoEn': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true)); // 🔹 "merge" evita sobrescribir campos vacíos
+      }, SetOptions(merge: true)); // 
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Información guardada exitosamente')),

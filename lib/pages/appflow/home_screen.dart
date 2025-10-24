@@ -67,18 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material( // <--- AGREGA ESTA LÍNEA
+    return Material( //
       child: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             /*Image.asset(
-            'assets/img/bg_01.jpg',
-            width: double.maxFinite, //Maximo de su contenedor padre
-            fit: BoxFit.fitWidth, //Maximo de su contenedor padre
-            ),*/
-          
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Row(
