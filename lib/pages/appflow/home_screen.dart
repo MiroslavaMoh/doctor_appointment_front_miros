@@ -68,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Material( //
+    color: Colors.white,
       child: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -413,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     alignment: Alignment.center,
                     margin: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                       color: const Color.fromARGB(255, 169, 168, 198),//color de fondo
+                       color: const Color.fromARGB(255, 236, 235, 242),//color de fondo
                         borderRadius: BorderRadius.circular(10)),
                     child: Stack(
                       alignment: Alignment.topCenter,
@@ -438,12 +439,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 bottomLeft: Radius.circular(10),
                                 bottomRight: Radius.circular(10),
                               ),
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            
                                 child: Container(
+                                  color: Colors.grey[800],
                                   width: double.maxFinite,
-                                  color: Colors.black12,
+                                  //color: Colors.black12,
                                   padding: const EdgeInsets.all(15),
                                   child: Column(
                                     children: [
@@ -466,7 +466,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
+                              
                             ),
                           ],
                         )

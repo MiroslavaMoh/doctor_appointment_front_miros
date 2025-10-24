@@ -46,7 +46,7 @@ class _MessagepageState extends State<Messagepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff8f8f8),
+      backgroundColor: Colors.white,
       
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
@@ -104,8 +104,8 @@ class _MessagepageState extends State<Messagepage> {
                             height: 55,
                             decoration: BoxDecoration(
                                 color: selectIndex == index
-                                    ? Colors.deepPurple[200] //Color de fondo de ficha seleccionada
-                                    : Colors.grey[200], //Color de fondo de ficha no seleccionada
+                                    ?  const Color.fromARGB(247, 15, 15, 15)
+                                    : const Color.fromARGB(247, 235, 231, 235), //Color de fondo de ficha no seleccionada
                                 borderRadius: BorderRadius.circular(20)),
                             alignment: Alignment.center,
                             child: Image.asset(
@@ -157,6 +157,7 @@ class _MessagepageState extends State<Messagepage> {
                           CircleAvatar(
                             radius: 28,
                             backgroundImage: AssetImage(msg["image"]),
+                            backgroundColor: const Color.fromARGB(247, 235, 231, 235),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -206,7 +207,7 @@ class _MessagepageState extends State<Messagepage> {
                                   width: 10,
                                   height: 10,
                                   decoration: const BoxDecoration(
-                                    color: Colors.blueAccent,
+                                    color: Color.fromARGB(255, 135, 195, 237),
                                     shape: BoxShape.circle,
                                   ),
                                 ),

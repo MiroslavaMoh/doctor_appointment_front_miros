@@ -17,7 +17,8 @@ class _Settingspage extends State<Settingspage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material( // <--- AGREGA ESTA LÍNEA
+    return Material(
+    color: Colors.white,
       child:SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -60,7 +61,7 @@ class _Settingspage extends State<Settingspage> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
+                               color: const Color.fromARGB(247, 241, 238, 241),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             margin: EdgeInsets.symmetric(vertical: 5),
@@ -74,7 +75,7 @@ class _Settingspage extends State<Settingspage> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
+                               color: const Color.fromARGB(247, 241, 238, 241),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             margin: EdgeInsets.symmetric(vertical: 5),
@@ -86,7 +87,7 @@ class _Settingspage extends State<Settingspage> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
+                              color: const Color.fromARGB(247, 241, 238, 241),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             margin: EdgeInsets.symmetric(vertical: 5),
@@ -98,7 +99,7 @@ class _Settingspage extends State<Settingspage> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
+                               color: const Color.fromARGB(247, 241, 238, 241),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             margin: EdgeInsets.symmetric(vertical: 5),
@@ -110,7 +111,7 @@ class _Settingspage extends State<Settingspage> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
+                               color: const Color.fromARGB(247, 241, 238, 241),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             margin: EdgeInsets.symmetric(vertical: 5),

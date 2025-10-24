@@ -184,11 +184,21 @@ class _CitasPageState extends State<CitasPage> {
 
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Gestionar Citas')),
+      backgroundColor: Colors.white, 
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+            Text(
+                  "Gestionar Citas",
+                  style: TextStyle(
+                    color: Colors.grey[800],
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
             Text(
               _nombreUsuario == null
                   ? 'Cargando usuario...'
@@ -263,6 +273,7 @@ class _CitasPageState extends State<CitasPage> {
 
 
                       return Card(
+                        color: const Color.fromARGB(247, 241, 238, 241),
                         margin: const EdgeInsets.symmetric(vertical: 5),
                         child: ListTile(
                           title: Text('$motivo ($nombreCita)'),
@@ -273,12 +284,12 @@ class _CitasPageState extends State<CitasPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon: const Icon(Icons.edit, color: Colors.blue),
+                                icon: const Icon(Icons.edit, color: Color.fromARGB(255, 92, 226, 159)),
                                 onPressed: () => _editarCita(cita.id, data),
                                 tooltip: 'Editar Cita',
                               ),
                               IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
+                                icon: const Icon(Icons.delete, color: Color.fromARGB(255, 222, 33, 102)),
                                 onPressed: () => _eliminarCita(cita.id),
                                 tooltip: 'Eliminar Cita',
                               ),

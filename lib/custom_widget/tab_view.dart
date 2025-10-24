@@ -52,10 +52,10 @@ class _MainTabViewScreenState extends State<MainTabViewScreen> with SingleTicker
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              TabButton(icon: "assets/img/kids.png", title: "Inicio", isSelect: selectedTab == 0, onPressed: () => _onTabSelected(0)),
-              TabButton(icon: "assets/img/fav_m.png", title: "Mensajes", isSelect: selectedTab == 1, onPressed: () => _onTabSelected(1)),
-              TabButton(icon: "assets/img/sleep_btn.png", title: "Citas", isSelect: selectedTab == 2, onPressed: () => _onTabSelected(2)),
-              TabButton(icon: "assets/img/anxious.png", title: "Ajustes", isSelect: selectedTab == 3, onPressed: () => _onTabSelected(3)),
+              TabButton(icon: "assets/img/home.png", title: "Inicio", isSelect: selectedTab == 0, onPressed: () => _onTabSelected(0)),
+              TabButton(icon: "assets/img/message.png", title: "Mensajes", isSelect: selectedTab == 1, onPressed: () => _onTabSelected(1)),
+              TabButton(icon: "assets/img/cita.png", title: "Citas", isSelect: selectedTab == 2, onPressed: () => _onTabSelected(2)),
+              TabButton(icon: "assets/img/ajuste.png", title: "Ajustes", isSelect: selectedTab == 3, onPressed: () => _onTabSelected(3)),
             ],
           ),
         ),
