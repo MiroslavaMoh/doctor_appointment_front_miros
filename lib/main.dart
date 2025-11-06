@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       //home: MainTabViewScreen(),
       //home: LoginPage(),
        // Rutas iniciales (flujo de login o flujo principal)
-      initialRoute: routes_authflow.login, 
+      initialRoute: routes_authflow.login,   
 
       // Aquí se combinan ambos generadores de rutas
       onGenerateRoute: (settings) {

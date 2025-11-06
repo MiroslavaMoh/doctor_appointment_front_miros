@@ -121,8 +121,15 @@ class _Settingspage extends State<Settingspage> {
                               onTap: () async {
                                 // Cierra la sesión del usuario actual con FirebaseAuth
                                 await _auth.signOut();
-                                Navigator.pushReplacementNamed(context, routes_authflow.login);
-                              },
+                                //Navigator.pushReplacementNamed(context, routes_authflow.login);
+                                Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+                                  routes_authflow.login,
+                                  (Route<dynamic> route) => false);
+                                 ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Sesión cerrada correctamente")),
+                                  );
+                                },
+                              
                             ),
                           ),
                         ],

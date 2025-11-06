@@ -5,6 +5,7 @@ import 'package:doctor_appointment_front_miros/pages/appflow/home_screen.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/messagepage.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/settingspage.dart';
 import 'package:flutter/material.dart';
+import 'package:doctor_appointment_front_miros/pages/appflow/cupertino_test.dart';
 
 //Este es un archivo el cual contienen un sistema centralizado de rutas para la navegacion entre pantallas :D
 
@@ -33,7 +34,7 @@ class Routes_appflow { //
       case appointment: 
         return MaterialPageRoute(builder: (_) => const CitasPage());
       case profile: 
-        return MaterialPageRoute(builder: (_) => const ProfilePage());
+        return MaterialPageRoute(builder: (_) => const CupertinoTest());
       case tabview: 
         return MaterialPageRoute(builder: (_) => const MainTabViewScreen());
 
