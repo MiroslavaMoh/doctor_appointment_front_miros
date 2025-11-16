@@ -1,11 +1,13 @@
 import 'package:doctor_appointment_front_miros/custom_widget/tab_view.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/Profile_page.dart';
+import 'package:doctor_appointment_front_miros/pages/appflow/Profile_doctor_page.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/citas_page.dart';
+import 'package:doctor_appointment_front_miros/pages/appflow/home_doctor_screen.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/home_screen.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/messagepage.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/settingspage.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_front_miros/pages/appflow/cupertino_test.dart';
+import 'package:doctor_appointment_front_miros/pages/appflow/citas_doctor_page.dart';
 
 //Este es un archivo el cual contienen un sistema centralizado de rutas para la navegacion entre pantallas :D
 
@@ -17,8 +19,11 @@ class Routes_appflow { //
     static const String ajustes = '/settings'; //que no puedo poder settings que se repite con el switch jajaja
     static const String messages = '/messages'; 
     static const String appointment = '/appointment'; 
-    static const String profile = '/profile'; 
+    static const String profile = '/profile';
+    static const String profileDoctor = '/profile/doctor'; 
     static const String tabview = '/apphome'; 
+    static const String appointmentDoctor = '/appointment/doctor';
+    static const String homeDoctor = '/home/doctor';
 
   // Generador de rutas
   static Route<dynamic> generateRoute(RouteSettings settings) { 
@@ -34,9 +39,15 @@ class Routes_appflow { //
       case appointment: 
         return MaterialPageRoute(builder: (_) => const CitasPage());
       case profile: 
-        return MaterialPageRoute(builder: (_) => const CupertinoTest());
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
+      case profileDoctor: 
+        return MaterialPageRoute(builder: (_) => const ProfileDoctorPage());
       case tabview: 
         return MaterialPageRoute(builder: (_) => const MainTabViewScreen());
+      case appointmentDoctor: 
+        return MaterialPageRoute(builder: (_) => const CitasDoctorPage());
+      case homeDoctor:
+        return MaterialPageRoute(builder: (_) => const HomeDoctorScreen());
 
       
       // Mensaje por defecto para rutas no definidas

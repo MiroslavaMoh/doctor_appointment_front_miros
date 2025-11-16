@@ -20,17 +20,41 @@ class _CitasPageState extends State<CitasPage> {
   DateTime? _fechaSeleccionada;
   String? _citaEnEdicionId; // ID de la cita que estamos editando
 
+  List<Map<String, dynamic>> _doctores = [];
+  String? _doctorSeleccionado;
+
   @override
   void initState() {
     super.initState();
     _cargarNombreUsuario();
+    _cargarDoctores();  
   }
+
+Future<void> _cargarDoctores() async {
+  try {
+    final snapshot = await _firestore
+        .collection('usuarios')
+        .where('roles', isEqualTo: 'Doctor')
+        .get();
+
+    setState(() {
+      _doctores = snapshot.docs.map((doc) {
+        return {
+          'uid': doc.id,            
+          'nombre': doc['nombre'],  
+        };
+      }).toList();
+    });
+  } catch (e) {
+    print("Error al cargar doctores: $e");
+  }
+}
+
 
   // Cargar el nombre del usuario desde Firestore
   Future<void> _cargarNombreUsuario() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      // Intenta obtener el displayName de Firebase Auth primero
       String? displayName = user.displayName;
 
       if (displayName != null && displayName.isNotEmpty) {
@@ -38,15 +62,12 @@ class _CitasPageState extends State<CitasPage> {
            _nombreUsuario = displayName;
          });
       } else {
-         // Si no hay displayName, busca en la colección 'usuarios'
          final doc = await _firestore.collection('usuarios').doc(user.uid).get();
          if (doc.exists && doc.data() != null) {
             setState(() {
-             // Asume que tienes un campo 'nombre' en tu documento de usuario
              _nombreUsuario = doc.data()!['nombre'] ?? user.email ?? 'Usuario Anónimo';
            });
          } else {
-            // Si no hay documento o campo nombre, usa el email como fallback
            setState(() {
               _nombreUsuario = user.email ?? 'Usuario Anónimo';
            });
@@ -90,66 +111,74 @@ class _CitasPageState extends State<CitasPage> {
   }
 
   // Agregar o actualizar cita
-  Future<void> _guardarCita() async {
-    if (_motivoController.text.isEmpty || _fechaSeleccionada == null) {
-       if (mounted){ // Check if mounted
-         ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text("Completa todos los campos")),
-         );
-       }
-      return;
+ Future<void> _guardarCita() async {
+  if (_motivoController.text.isEmpty || _fechaSeleccionada == null || _doctorSeleccionado == null) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Completa todos los campos")),
+      );
+    }
+    return;
+  }
+
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Usuario no autenticado")),
+      );
+    }
+    return;
+  }
+
+  // Obtener datos del doctor elegido
+  final doctorData = _doctores.firstWhere(
+    (d) => d['uid'] == _doctorSeleccionado,
+    orElse: () => {'nombre': 'Desconocido'},
+  );
+
+  final data = {
+    'userId': user.uid,
+    'nombreUsuario': _nombreUsuario ?? 'Sin nombre',
+    'motivo': _motivoController.text.trim(),
+    'fechaHora': Timestamp.fromDate(_fechaSeleccionada!),
+    'doctorId': _doctorSeleccionado,
+    'doctorNombre': doctorData['nombre'],
+    'creadoEn': FieldValue.serverTimestamp(),
+  };
+
+  try {
+    if (_citaEnEdicionId == null) {
+      await _firestore.collection('citas').add(data);
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Cita creada")));
+      }
+    } else {
+      await _firestore.collection('citas').doc(_citaEnEdicionId).update(data);
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Cita actualizada")));
+      }
     }
 
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-       if (mounted) { // Check if mounted
-          ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text("Usuario no autenticado")),
-         );
-       }
-      return;
-    }
-
-
-    final data = {
-      'userId': user.uid, // Guardar el UID del usuario que crea la cita
-      'nombreUsuario': _nombreUsuario ?? 'Sin nombre',
-      'motivo': _motivoController.text.trim(),
-      'fechaHora': Timestamp.fromDate(_fechaSeleccionada!),
-      'creadoEn': FieldValue.serverTimestamp(),
-    };
-
-    try {
-        if (_citaEnEdicionId == null) {
-        // Crear nueva cita
-        await _firestore.collection('citas').add(data);
-         if (mounted) { // Check if mounted
-            ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text("Cita creada")));
-         }
-        } else {
-        // Actualizar cita existente
-        await _firestore.collection('citas').doc(_citaEnEdicionId).update(data);
-         if (mounted) { // Check if mounted
-           ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text("Cita actualizada")));
-         }
-        }
-
-        // Limpiar formulario después de guardar
-        _motivoController.clear();
-        setState(() {
-        _fechaSeleccionada = null;
-        _citaEnEdicionId = null;
-        });
-    } catch (e) {
-       if (mounted) { // Check if mounted
-          print("Error al guardar cita: $e"); // Imprime el error en la consola
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Error al guardar la cita: ${e.toString()}")));
-       }
+    // Reset form
+    _motivoController.clear();
+    setState(() {
+      _fechaSeleccionada = null;
+      _citaEnEdicionId = null;
+      _doctorSeleccionado = null;
+    });
+  } catch (e) {
+    if (mounted) {
+      print("Error al guardar cita: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error al guardar la cita: $e")),
+      );
     }
   }
+}
+
 
   // Eliminar cita
   Future<void> _eliminarCita(String id) async {
@@ -174,6 +203,7 @@ class _CitasPageState extends State<CitasPage> {
       _citaEnEdicionId = id;
       _motivoController.text = data['motivo'] ?? '';
       _fechaSeleccionada = (data['fechaHora'] as Timestamp?)?.toDate();
+      _doctorSeleccionado = data['doctorId'] ?? '';
     });
   }
 
@@ -212,6 +242,28 @@ class _CitasPageState extends State<CitasPage> {
                   labelText: 'Motivo de la cita', border: OutlineInputBorder()),
             ),
             const SizedBox(height: 10),
+
+           DropdownButtonFormField<String>(
+            decoration: const InputDecoration(
+              labelText: "Seleccionar Doctor",
+              border: OutlineInputBorder(),
+            ),
+            value: _doctorSeleccionado,
+            items: _doctores.map((doc) {
+              return DropdownMenuItem<String>(
+                value: doc['uid'] as String,
+                child: Text(doc['nombre']),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                _doctorSeleccionado = value;
+              });
+            },
+          ),
+
+            const SizedBox(height: 10),
+
             Row(
               children: [
                 Expanded(
@@ -226,12 +278,6 @@ class _CitasPageState extends State<CitasPage> {
               ],
             ),
             const SizedBox(height: 10),
-           /* ElevatedButton(
-              onPressed: _guardarCita,
-              child: Text(_citaEnEdicionId == null
-                  ? 'Programar Cita'
-                  : 'Guardar Cambios'),
-            ),*/
 
             RoundButton(title: 'Programar Cita', onPressed: _guardarCita),
             const SizedBox(height: 20),
@@ -270,6 +316,7 @@ class _CitasPageState extends State<CitasPage> {
                       final fecha = (data['fechaHora'] as Timestamp?)?.toDate();
                       final motivo = data['motivo'] ?? 'Sin motivo';
                       final nombreCita = data['nombreUsuario'] ?? 'Desconocido';
+                      final doctor = data['doctorNombre'] ?? 'Sin doctor';
 
 
                       return Card(

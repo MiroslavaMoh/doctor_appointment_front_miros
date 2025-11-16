@@ -325,19 +325,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Image.asset(
                               cObj["image"],
                               height: 120,
-                              width: double.infinity,
+                              width: 50,
                               fit: BoxFit.cover,
                             ),
                           ),
                           Container(
-                            color: Colors.grey[800],
+                            color: Colors.transparent,
                             padding: const EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Text(
                                   cObj["title"],
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black38,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -345,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Text(
                                   cObj["subtitle"],
                                   style: const TextStyle(
-                                    color: Colors.white70,
+                                    color: Colors.black38,
                                     fontSize: 14,
                                   ),
                                 ),

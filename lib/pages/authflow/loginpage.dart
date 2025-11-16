@@ -13,11 +13,16 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                         password: passwordController.text.trim(),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Bienvenido ${userCredential.user!.email}")),
+                        SnackBar(content: 
+                          Text("Bienvenido ${userCredential.user!.email}")
+                          ),
                       );
 
                     //Navigator.pushNamed(context, Routes_appflow.home); // reemplazo con routes.dart

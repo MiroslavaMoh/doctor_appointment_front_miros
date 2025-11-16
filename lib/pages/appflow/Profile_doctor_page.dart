@@ -5,14 +5,14 @@ import 'package:doctor_appointment_front_miros/pages/authflow/routes_authflow.da
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfileDoctorPage extends StatefulWidget {
+  const ProfileDoctorPage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfileDoctorPage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfileDoctorPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -102,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final user = _auth.currentUser;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Perfil del usuario")),
+      appBar: AppBar(title: const Text("Perfil del doctor")),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
@@ -151,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     TextField(
                       controller: enfermedadesController,
                       decoration: const InputDecoration(
-                        labelText: 'Enfermedades o historial médico',
+                        labelText: 'Especialidades',
                         border: OutlineInputBorder(),
                       ),
                       maxLines: 3,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 import 'package:doctor_appointment_front_miros/custom_widget/round_button.dart';
 
 class registerpage extends StatefulWidget {
@@ -17,14 +18,21 @@ class _registerpageState extends State<registerpage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> _registerUser() async {
+  String? _selectedRole;
+
+  final List<String> roles = [
+    "Paciente",
+    "Doctor",
+  ];
+
+   Future<void> _registerUser() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Crear usuario con correo y contraseña
         UserCredential userCredential =
             await _auth.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
@@ -37,17 +45,17 @@ class _registerpageState extends State<registerpage> {
           await user.sendEmailVerification();
         }
 
-        // Guardar datos del usuario en Firestore
-        await _firestore.collection('usuarios').doc(user!.uid).set({
-          'uid': user.uid,
-          'email': user.email,
+        // Guardar en Firestore
+        await _firestore.collection('usuarios').doc(user?.uid).set({
+          'uid': user?.uid,
+          'email': user?.email,
+          'nombre': nameController.text.trim(),
+          'roles': _selectedRole,   // GUARDAR ROL
           'createdAt': FieldValue.serverTimestamp(),
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Registro exitoso. Verifica tu correo electrónico."),
-          ),
+          const SnackBar(content: Text("Registro exitoso. Verifica tu correo.")),
         );
 
         Navigator.pushReplacementNamed(context, routes_authflow.login);
@@ -55,17 +63,11 @@ class _registerpageState extends State<registerpage> {
       } on FirebaseAuthException catch (e) {
         String error = 'Error inesperado';
 
-        if (e.code == 'email-already-in-use') {
-          error = 'Este correo ya está en uso.';
-        } else if (e.code == 'invalid-email') {
-          error = 'Correo inválido.';
-        } else if (e.code == 'weak-password') {
-          error = 'Contraseña demasiado débil.';
-        }
+        if (e.code == 'email-already-in-use') error = 'Este correo ya está en uso.';
+        if (e.code == 'invalid-email') error = 'Correo inválido.';
+        if (e.code == 'weak-password') error = 'Contraseña muy débil.';
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error)),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
       }
     }
   }
@@ -113,6 +115,23 @@ class _registerpageState extends State<registerpage> {
                   ),
                   const SizedBox(height: 32),
 
+                  // Nombre
+                  TextFormField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      labelText: "Nombre",
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Por favor ingresa tu nombre";
+                      }
+
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+
                   // Email
                   TextFormField(
                     controller: emailController,
@@ -131,6 +150,28 @@ class _registerpageState extends State<registerpage> {
                     },
                   ),
                   const SizedBox(height: 16),
+
+                  DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: "Seleccionar rol",
+                        border: OutlineInputBorder(),
+                      ),
+                      value: _selectedRole,
+                      items: roles.map((role) {
+                        return DropdownMenuItem<String>(
+                          value: role,
+                          child: Text(role),
+                        );
+                      }).toList(),
+                      validator: (value) =>
+                          value == null ? "Por favor selecciona un rol" : null,
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedRole = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 16),
 
                   // Password
                   TextFormField(
