@@ -81,7 +81,7 @@ class _registerpageState extends State<registerpage> {
           // Imagen de fondo
           Image.asset(
             'assets/img/bg_01.jpg',
-            width: double.maxFinite,
+            width: 150,
             fit: BoxFit.fitWidth,
           ),
           SingleChildScrollView(

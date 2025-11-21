@@ -1,0 +1,220 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+
+class GraphicsPage extends StatefulWidget {
+  const GraphicsPage({Key? key}) : super(key: key);
+
+  @override
+  _GraphicsPageState createState() => _GraphicsPageState();
+}
+
+class _GraphicsPageState extends State<GraphicsPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Map<String, int> citasPorMes = {};
+  Map<String, int> pacientesPorDoctor = {};
+  Map<String, String> nombresDoctores = {};   
+
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarDatos();
+  }
+
+
+  /// CARGAR DATOS
+  Future<void> _cargarDatos() async {
+    try {
+      //Cargar doctores desde firebase
+
+      final doctoresSnapshot = await _firestore
+          .collection("usuarios")
+          .where("roles", isEqualTo: "Doctor")
+          .get();
+
+      Map<String, String> tempNombres = {};
+
+      for (var doc in doctoresSnapshot.docs) {
+        final data = doc.data();
+        final id = data["uid"]; //Uid usuario
+
+        final nombre = data["nombre"] ?? "Sin nombre";
+
+        tempNombres[id] = nombre;
+      }
+
+
+      // Cargar citas
+
+      final citasSnapshot = await _firestore.collection("citas").get();
+
+      Map<String, int> mesesTemp = {
+        "Ene": 0, "Feb": 0, "Mar": 0, "Abr": 0, "May": 0, "Jun": 0,
+        "Jul": 0, "Ago": 0, "Sep": 0, "Oct": 0, "Nov": 0, "Dic": 0,
+      };
+
+      Map<String, int> pacientesPorDoctorTemp = {};
+
+      for (var doc in citasSnapshot.docs) {
+        final data = doc.data();
+        final fecha = (data["fechaHora"] as Timestamp?)?.toDate();
+        final doctorId = data["doctorId"] ?? "";
+
+        // ---- Citas por mes ----
+        if (fecha != null) {
+          String mes = _mesToString(fecha.month);
+          mesesTemp[mes] = (mesesTemp[mes] ?? 0) + 1;
+        }
+
+        // ---- Pacientes por doctor ----
+        if (doctorId.isNotEmpty) {
+          pacientesPorDoctorTemp[doctorId] =
+              (pacientesPorDoctorTemp[doctorId] ?? 0) + 1;
+        }
+      }
+
+      setState(() {
+        nombresDoctores = tempNombres;
+        citasPorMes = mesesTemp;
+        pacientesPorDoctor = pacientesPorDoctorTemp;
+        loading = false;
+      });
+    } catch (e) {
+      print("ERROR al cargar datos: $e");
+      setState(() => loading = false);
+    }
+  }
+
+  String _mesToString(int mes) {
+    const meses = [
+      "Ene","Feb","Mar","Abr","May","Jun",
+      "Jul","Ago","Sep","Oct","Nov","Dic"
+    ];
+    return meses[mes - 1];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Gráficas de Datos"),
+        backgroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            _buildTitle("Citas creadas por mes"),
+            SizedBox(height: 250, child: BarChart(_barChartMeses())),
+
+            const SizedBox(height: 40),
+
+            _buildTitle("Pacientes atendidos por médico"),
+            SizedBox(
+              height: 300,
+              child: PieChart(_piePacientesPorDoctor()),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// BARCHART → Citas por mes
+
+  BarChartData _barChartMeses() {
+    final meses = citasPorMes.keys.toList();
+    final valores = citasPorMes.values.toList();
+
+    return BarChartData(
+      alignment: BarChartAlignment.spaceAround,
+      borderData: FlBorderData(show: false),
+      titlesData: FlTitlesData(
+        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (value, _) {
+              if (value < 0 || value >= meses.length) return Container();
+              return Text(meses[value.toInt()], style: const TextStyle(fontSize: 10));
+            },
+          ),
+        ),
+      ),
+      barGroups: List.generate(meses.length, (i) {
+        return BarChartGroupData(
+          x: i,
+          barRods: [
+            BarChartRodData(
+              toY: valores[i].toDouble(),
+              width: 18,
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.blue,
+            )
+          ],
+        );
+      }),
+    );
+  }
+
+  /// PieCHART → Pacientes atendidos por cada médico
+ PieChartData _piePacientesPorDoctor() {
+  final doctorIds = pacientesPorDoctor.keys.toList();
+  final valores = pacientesPorDoctor.values.toList();
+
+  return PieChartData(
+    sectionsSpace: 3,
+    centerSpaceRadius: 40,
+    sections: List.generate(doctorIds.length, (i) {
+      final doctorId = doctorIds[i];  // ← ID correcto
+      final nombre = nombresDoctores[doctorId] ?? "Desconocido";  // ← Nombre correcto
+
+      return PieChartSectionData(
+        value: valores[i].toDouble(),
+        title: "${valores[i]}",
+        radius: 60,
+        color: Colors.primaries[i % Colors.primaries.length],
+        titleStyle: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+        badgeWidget: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            nombre,
+            style: const TextStyle(fontSize: 10, color: Colors.black),
+          ),
+        ),
+        badgePositionPercentageOffset: 1.2,
+      );
+    }),
+  );
+}
+
+
+
+  Widget _buildTitle(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+      ),
+    );
+  }
+}

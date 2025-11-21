@@ -2,6 +2,7 @@ import 'package:doctor_appointment_front_miros/custom_widget/tab_view.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/Profile_page.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/Profile_doctor_page.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/citas_page.dart';
+import 'package:doctor_appointment_front_miros/pages/appflow/graphic_doctor_page';
 import 'package:doctor_appointment_front_miros/pages/appflow/home_doctor_screen.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/home_screen.dart';
 import 'package:doctor_appointment_front_miros/pages/appflow/messagepage.dart';
@@ -24,6 +25,7 @@ class Routes_appflow { //
     static const String tabview = '/apphome'; 
     static const String appointmentDoctor = '/appointment/doctor';
     static const String homeDoctor = '/home/doctor';
+    static const String graphicDoctor= '/graphic/doctor';
 
   // Generador de rutas
   static Route<dynamic> generateRoute(RouteSettings settings) { 
@@ -48,6 +50,8 @@ class Routes_appflow { //
         return MaterialPageRoute(builder: (_) => const CitasDoctorPage());
       case homeDoctor:
         return MaterialPageRoute(builder: (_) => const HomeDoctorScreen());
+      case graphicDoctor:
+        return MaterialPageRoute(builder: (_) => const GraphicsPage());
 
       
       // Mensaje por defecto para rutas no definidas

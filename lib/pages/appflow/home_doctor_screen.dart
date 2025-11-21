@@ -196,40 +196,51 @@ class _HomeScreenState extends State<HomeDoctorScreen> {
                         ),
                       ),
                       const SizedBox(width: 15),
+                      
                       Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xffFFC97E),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Image.asset(
-                                  "assets/img/Onigiri_4.png",
-                                  width: 80,
-                                  height: 80,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes_appflow.graphicDoctor);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFFC97E),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            padding: const EdgeInsets.all(16),
+
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Image.asset(
+                                    "assets/img/Onigiri_4.png",
+                                    width: 80,
+                                    height: 80,
+                                  ),
                                 ),
-                              ),
-                              const Text(
-                                "Consejos gateros",
-                                style: TextStyle(
+                                const Text(
+                                  "Graficas de datos",
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Text(
-                                "Cuida a tu gato",
-                                style: TextStyle(
-                                    color: Colors.white70, fontSize: 12),
-                              ),
-                            ],
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Text(
+                                  "Acerca de tus pacientes",
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
+                      )
+
                     ],
                   ),
 
